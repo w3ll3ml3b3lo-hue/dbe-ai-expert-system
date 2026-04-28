@@ -1,0 +1,10 @@
+# Core Dependencies
+fastapi==0.103.1
+uvicorn==0.23.2
+pydantic==2.3.0
+azure-cosmos==4.5.1
+azure-ai-ml==1.10.0
+azure-identity==1.14.0
+azure-mgmt-resource==23.1.0
+python-dotenv==1.0.0
+requests==2.31.0

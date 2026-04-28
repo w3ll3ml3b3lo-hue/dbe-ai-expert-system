@@ -22,11 +22,21 @@ The system follows a modular pipeline designed for scalability and high-performa
 - Docker (for local testing/deployment)
 - Kubernetes Tools (kubectl, helm)
 
-### Installation
 ```bash
 git clone <repository-url>
 cd dbe-ai-expert-system
+pip install -r requirements.txt
 ```
+
+## Current Status: Initial Implementation Phase
+We have initialized the core skeletons and infrastructure definitions for all project epics.
+
+### Epics Progress
+- [x] **Epic 1: Foundation** - Terraform base, Key Vault, Identity, CI/CD Workflow.
+- [x] **Epic 2: Intelligence** - Cosmos DB, Azure ML Workspace, Ingestion Pipeline skeleton.
+- [x] **Epic 3: Orchestration** - AKS Cluster, API Gateway, FastAPI Orchestration service.
+- [x] **Epic 4: Optimization** - Feedback loop manager, Azure ML pipeline hooks.
+- [x] **Epic 5: Governance** - Azure Monitor, Dashboards, and Action Groups.
 
 ## Project Structure
 - `src/`: Core source code for orchestration and services.
