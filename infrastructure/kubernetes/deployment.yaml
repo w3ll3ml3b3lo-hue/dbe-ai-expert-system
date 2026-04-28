@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-orchestrator
+  labels:
+    app: agent-orchestrator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: agent-orchestrator
+  template:
+    metadata:
+      labels:
+        app: agent-orchestrator
+    spec:
+      containers:
+      - name: orchestrator
+        image: <your-acr-name>.azurecr.io/agent-orchestrator:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: COSMOS_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: dbe-secrets
+              key: cosmos-endpoint
+        - name: COSMOS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dbe-secrets
+              key: cosmos-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-orchestrator-service
+spec:
+  selector:
+    app: agent-orchestrator
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: LoadBalancer

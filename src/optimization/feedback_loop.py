@@ -31,7 +31,11 @@ class FeedbackLoopManager:
             # Trigger alert or manual review task
 
     def save_to_feedback_store(self, data):
-        # Implementation for saving to blob or database
+        """Save feedback to Azure Blob Storage for future retraining."""
+        logger.info(f"Saving feedback to store: {json.dumps(data)}")
+        # In practice, use azure-storage-blob to upload a JSON file
+        # blob_client = self.blob_service_client.get_blob_client(container="feedback", blob=f"{data['query'][:10]}.json")
+        # blob_client.upload_blob(json.dumps(data))
         pass
 
     def trigger_retraining(self):
@@ -39,8 +43,14 @@ class FeedbackLoopManager:
         Trigger an Azure ML Pipeline for model retraining.
         """
         logger.info("Triggering retraining pipeline...")
-        # pipeline_job = self.ml_client.jobs.create_or_update(...)
-        pass
+        # Define the pipeline job
+        # pipeline_job = self.ml_client.jobs.create_or_update(
+        #     name="dbe-expert-retraining-pipeline",
+        #     experiment_name="retraining-experiment",
+        #     ...
+        # )
+        # return pipeline_job
+        return {"status": "retraining_triggered", "job_id": "dummy_job_id"}
 
 if __name__ == "__main__":
     # Placeholder initialization
