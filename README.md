@@ -25,11 +25,21 @@ The system follows a modular pipeline designed for scalability and high-performa
 ```bash
 git clone <repository-url>
 cd dbe-ai-expert-system
-pip install -r requirements.txt
+pip install -e .
+```
+
+### Run locally
+```bash
+python src/orchestration/main.py
+```
+
+### Run tests
+```bash
+pytest -q
 ```
 
 ## Current Status: Initial Implementation Phase
-We have initialized the core skeletons and infrastructure definitions for all project epics.
+We have initialized the core skeletons and infrastructure definitions for all project epics. The project now includes package metadata, stronger service orchestration, Azure-backed feedback plumbing, and agent guidance for future contributors.
 
 ### Epics Progress
 - [x] **Epic 1: Foundation** - Terraform base, Key Vault, Identity, CI/CD Workflow.
