@@ -35,7 +35,7 @@ class KnowledgeGraphManager:
 
     def add_document_node(self, doc_id, doc_name, category_id):
         """Link a document to a category in the graph."""
-        if not self.validate_schema("Document"):
+        if not self.validate_schema('vertex', 'Document'):
             raise ValueError("Schema validation failed for vertex label 'Document'")
             
         query = f"g.addV('Document').property('id', '{doc_id}').property('name', '{doc_name}')"
@@ -45,16 +45,44 @@ class KnowledgeGraphManager:
         self.client.submit(link_query).all().result()
         print(f"Added document {doc_name} to category {category_id}")
 
-    def validate_schema(self, label):
-        """Verify if a label is part of the allowed schema."""
-        allowed_labels = ["ExpertSystem", "Category", "Document", "Agent"]
-        return label in allowed_labels
+    def validate_schema(self, element_type, label, properties=None):
+        """
+        Verify if a label and its properties are part of the allowed schema.
+        element_type: 'vertex' or 'edge'
+        """
+        schema = self.get_schema_definition()
+        
+        if element_type == 'vertex':
+            if label not in schema['vertices']:
+                logger.error(f"Invalid vertex label: {label}")
+                return False
+        elif element_type == 'edge':
+            if label not in schema['edges']:
+                logger.error(f"Invalid edge label: {label}")
+                return False
+        else:
+            return False
+
+        if properties:
+            allowed_props = schema['properties'].get(label, [])
+            for prop in properties:
+                if prop not in allowed_props:
+                    logger.warning(f"Property '{prop}' is not in the defined schema for '{label}'")
+                    # We might still allow it but log a warning, or return False
+        
+        return True
 
     def get_schema_definition(self):
-        """Returns the current graph schema definition."""
+        """Returns the current graph schema definition including allowed properties."""
         return {
             "vertices": ["ExpertSystem", "Category", "Document", "Agent"],
-            "edges": ["manages", "contains", "references", "triggers"]
+            "edges": ["manages", "contains", "references", "triggers"],
+            "properties": {
+                "ExpertSystem": ["id", "name", "version"],
+                "Category": ["id", "name", "description"],
+                "Document": ["id", "name", "source", "category"],
+                "Agent": ["id", "name", "type"]
+            }
         }
 
 if __name__ == "__main__":

@@ -18,6 +18,17 @@ class AgentResponse(BaseModel):
 async def health_check():
     return {"status": "healthy"}
 
+from src.models.expert_model import AzureMLExpertModel, BaselinePolicyModel
+import os
+
+# Initialize models
+expert_model = BaselinePolicyModel()
+if os.getenv("AZURE_ML_ENDPOINT"):
+    expert_model = AzureMLExpertModel(
+        os.getenv("AZURE_ML_ENDPOINT"),
+        os.getenv("AZURE_ML_KEY")
+    )
+
 @app.post("/ask", response_model=AgentResponse)
 async def ask_agent(request: QueryRequest):
     """
@@ -28,27 +39,19 @@ async def ask_agent(request: QueryRequest):
         context = f"Retrieved context for query: {request.query}"
         
         # Step 2: Expert Model Inference
-        expert_advice = await call_expert_model(request.query, context)
+        expert_advice = await expert_model.predict(request.query, context)
         
         # Step 3: Simulated Reasoning/Synthesis
         reasoning_result = perform_reasoning(request.query, expert_advice)
         
         dummy_response = AgentResponse(
             response=reasoning_result,
-            sources=["Internal Knowledge Base", "Azure ML Expert Model v1"],
+            sources=["Internal Knowledge Base", "Azure ML Expert Model Baseline"],
             confidence=0.98
         )
         return dummy_response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-async def call_expert_model(query: str, context: str) -> str:
-    """
-    Simulates a call to an Azure ML Model endpoint.
-    """
-    import requests
-    # In practice: response = requests.post(os.getenv("ML_ENDPOINT"), json={"input": query, "context": context})
-    return f"Expert Model Insight: The policy documentation suggests a focus on {context[:20]}..."
 
 @app.post("/feedback")
 async def receive_feedback(query: str, response: str, rating: int):

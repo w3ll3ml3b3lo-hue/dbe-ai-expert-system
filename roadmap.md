@@ -1,15 +1,15 @@
 # Project Roadmap - DBE AI Expert System
 
-## Phase 1: Foundation (Current)
+## Phase 1: Foundation
 - [x] Initial Repository Setup
 - [x] Architecture Definition
-- [ ] Environment Setup (Azure Subscriptions/Resources)
-- [ ] Knowledge Ingestion Pipeline MVP
+- [x] Environment Setup (Azure Terraform Definitions)
+- [x] Knowledge Ingestion Pipeline MVP
 
-## Phase 2: Intelligence & Data
+## Phase 2: Intelligence & Data (Current)
 - [ ] Knowledge Graph Implementation (Cosmos DB)
-- [ ] Expert Models Baseline (Azure ML)
-- [ ] Basic Agentic Orchestration Layer
+- [x] Expert Models Baseline (Azure ML)
+- [x] Basic Agentic Orchestration Layer
 
 ## Phase 3: Integration & Scalability
 - [ ] API Gateway Configuration
